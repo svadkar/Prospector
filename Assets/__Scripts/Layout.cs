@@ -42,7 +42,7 @@ public class Layout : MonoBehaviour {
     public void ReadLayout(string xmlText)
     {
         xmlr = new PT_XMLReader();
-        xmlr.Parse(xmlTest);        //The XML is parsed 
+        xmlr.Parse(xmlText);        //The XML is parsed 
         xml = xmlr.xml["xml"][0];   //And xml is set as a shortcut to the XML
 
         //Read in the multiplier, whuich sets card spacing
@@ -95,6 +95,15 @@ public class Layout : MonoBehaviour {
                         }
                     }
                     slotDefs.Add(tSD);
+                    break;
+
+                case "drawpile":
+                    tSD.stagger.x = float.Parse(slotsX[i].att("xstagger"));
+                    drawPile = tSD;
+                    break;
+
+                case "discardpile":
+                    discardPile = tSD;
                     break;
             }
 

@@ -2,6 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
+//THis is an enum, which defines a type of variable that only has few possible
+//  values. The CardState variable type has one of four values:
+//  drawpile, tableau, target, & discard
+
+public enum CardState
+{
+    drawpile,
+    tableau,
+    target,
+    discard
+}
+
 public class Card : MonoBehaviour {
 
 	public string    suit;

@@ -16,6 +16,9 @@ public class Prospector : MonoBehaviour {
 	[Header("Set Dynamically")]
 	public Deck					deck;
 
+    public Layout layout;
+    public TextAsset layoutXML;
+
 	void Awake(){
 		S = this;
 	}
@@ -23,6 +26,10 @@ public class Prospector : MonoBehaviour {
 	void Start() {
 		deck = GetComponent<Deck> ();
 		deck.InitDeck (deckXML.text);
-	}
+        Deck.Shuffle(ref deck.cards);
+        layout = GetComponent<Layout>();    //Get the layout
+        layout.ReadLayout(layoutXML.text);  //Pass the LayoutXML to it
+    }
+
 
 }
