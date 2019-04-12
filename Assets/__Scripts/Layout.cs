@@ -48,6 +48,58 @@ public class Layout : MonoBehaviour {
         //Read in the multiplier, whuich sets card spacing
         multipler.x = float.Parse(xml["multipler"][0].att("x"));
         multipler.y = float.Parse(xml["multipler"][0].att("y"));
+
+        //Read in the slots
+        SlotDef tSD;
+
+        //slotsX is used tas shortcut to all <slot>s
+        PT_XMLHashList slotsX = xml["slot"];
+
+        for (int i = 0; i < slotsX.Count; i++)
+        {
+            tSD = new SlotDef();                //Create a new SlotDef instance
+            if (slotsX[i].HasAtt("type"))       //If this <slot> has a type attribute parse it
+            {
+                tSD.type = slotsX[i].att("type");
+            }
+            else                                //If not, set its type to "slot"; it's tableur card
+            {
+                tSD.type = "slot";
+            }
+
+            //Various attributes are parsed into numerical values
+            tSD.x = float.Parse(slotsX[i].att("x"));
+            tSD.y = float.Parse(slotsX[i].att("y"));
+            tSD.layerID = int.Parse(slotsX[i].att("layer"));
+
+            //This converts the number of the layerID into a text layerName
+            tSD.layerName = sortingLayerNames[tSD.layerID];
+            //The layers used to make sure that the correct cards are on top of the others.
+            //  In Unity 2D, all of our assets are effectively at the same Z depth, so the
+            //  the layer is used to differntiate between them
+
+            switch (tSD.type)
+            {
+                //pull additional attributes based on the type of this <slot>
+
+                case "slot":
+                    tSD.faceUp = (slotsX[i].att("faceup") == "1");
+                    tSD.id = int.Parse(slotsX[i].att("id"));
+
+                    if(slotsX[i].HasAtt("hiddenby"))
+                    {
+                        string[] hiding = slotsX[i].att("hiddenby").Split(',');
+                        foreach(string s in hiding)
+                        {
+                            tSD.hiddenBy.Add(int.Parse(s));
+                        }
+                    }
+                    slotDefs.Add(tSD);
+                    break;
+            }
+
+
+        }
     }
 
 }
